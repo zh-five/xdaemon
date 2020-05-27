@@ -3,7 +3,7 @@
 package main
 
 import (
-	"github.com/zh-five/damon"
+	"github.com/zh-five/daemon"
 	"log"
 	"os"
 )
