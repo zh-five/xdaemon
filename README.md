@@ -1,6 +1,7 @@
 # damon
 A library for writing system daemons in golang.
-一个让go程序快速后台运行的库
+一个让go程序快速后台运行的库.
+支持linux和windows
 
 # 两种运行模式
 ## 1.纯后台进程模式
@@ -14,16 +15,19 @@ import (
 	"github.com/zh-five/xdaemon"
 	"log"
 	"os"
+	"time"
 )
 
 func main() {
-	logFile := "/tmp/daemon.log"
+	logFile := "daemon.log"
 
 	//启动一个子进程后主程序退出
 	xdaemon.Background(logFile, true)
 
 	//以下代码只有子程序会执行
-	log.Println(os.Getpid(), ":", "执行正式代码:")
+	log.Println(os.Getpid(), "start...")
+	time.Sleep(time.Second * 10)
+	log.Println(os.Getpid(), "end")
 }
 ```
 ## 2.守护进程模式
@@ -35,40 +39,30 @@ func main() {
 
 请参考 example/auto_restart.go
 ```go
-//本示例, 将启动一个后台运行的守护进程. 然后由守护进程启动和维护最终子进程
+//本示例, 将把进程转为后台运行, 并保留所有参数不变
 
 package main
 
 import (
-	"github.com/zh-five/daemon"
-	"flag"
+	"github.com/zh-five/xdaemon"
 	"log"
 	"os"
 	"time"
 )
 
 func main() {
-	d := flag.Bool("d", false, "是否后台守护进程方式运行")
-	flag.Parse()
+	logFile := "daemon.log"
 
-	//启动守护进程
-	if *d {
-		//创建一个Daemon对象
-		logFile := "/tmp/daemon.log"
-		d := daemon.NewDaemon(logFile)
+	//启动一个子进程后主程序退出
+	xdaemon.Background(logFile, true)
 
-		//调整一些运行参数(可选)
-		//d.MaxCount = 2000
-
-		//执行
-		d.Run()
-	}
-
-	//当 *d = true 时以下代码只有最终子进程会执行, 主进程和守护进程都不会执行
+	//以下代码只有子程序会执行
 	log.Println(os.Getpid(), "start...")
 	time.Sleep(time.Second * 10)
 	log.Println(os.Getpid(), "end")
-
 }
 
 ```
+
+## 3.本次开发过程的博客记录
+[https://zhuanlan.zhihu.com/p/146192035](https://zhuanlan.zhihu.com/p/146192035)

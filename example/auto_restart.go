@@ -10,7 +10,6 @@ import (
 	"time"
 )
 
-//@link
 func main() {
 	d := flag.Bool("d", false, "是否后台守护进程方式运行")
 	flag.Parse()
