@@ -3,7 +3,7 @@
 package main
 
 import (
-	"github.com/zh-five/daemon"
+	"github.com/zh-five/xdaemon"
 	"flag"
 	"log"
 	"os"
@@ -19,9 +19,9 @@ func main() {
 	if *d {
 		//创建一个Daemon对象
 		logFile := "daemon.log"
-		d := daemon.NewDaemon(logFile)
+		d := xdaemon.NewDaemon(logFile)
 		//调整一些运行参数(可选)
-		//d.MaxCount = 2000
+		d.MaxCount = 2 //最大重启次数
 
 		//执行守护进程模式
 		d.Run()

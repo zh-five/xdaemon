@@ -1,6 +1,6 @@
 // +build !windows,!plan9
 
-package daemon
+package xdaemon
 
 import "syscall"
 
