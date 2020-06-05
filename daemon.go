@@ -6,7 +6,6 @@ import (
 	"os"
 	"os/exec"
 	"strconv"
-	"syscall"
 	"time"
 )
 
@@ -85,7 +84,7 @@ func (d *Daemon) Run() {
 			os.Exit(1)
 		}
 		if d.MaxCount > 0 && count > d.MaxCount {
-			log.Println(dInfo,"重启次数太多退出")
+			log.Println(dInfo, "重启次数太多退出")
 			os.Exit(0)
 		}
 		count++
@@ -93,7 +92,7 @@ func (d *Daemon) Run() {
 		t = time.Now().Unix() //启动时间戳
 		cmd, err := Background(d.LogFile, false)
 		if err != nil { //启动失败
-			log.Println(dInfo,"子进程启动失败;", "err:", err)
+			log.Println(dInfo, "子进程启动失败;", "err:", err)
 			errNum++
 			continue
 		}
@@ -107,7 +106,7 @@ func (d *Daemon) Run() {
 		//父进程: 等待子进程退出
 		err = cmd.Wait()
 		dat := time.Now().Unix() - t //子进程运行秒数
-		if dat < d.MinExitTime{ //异常退出
+		if dat < d.MinExitTime {     //异常退出
 			errNum++
 		} else { //正常退出
 			errNum = 0
@@ -121,7 +120,7 @@ func startProc(args, env []string, logFile string) (*exec.Cmd, error) {
 		Path:        args[0],
 		Args:        args,
 		Env:         env,
-		SysProcAttr: &syscall.SysProcAttr{Setsid: true},
+		SysProcAttr: NewSysProcAttr(),
 	}
 
 	if logFile != "" {

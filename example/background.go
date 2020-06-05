@@ -6,14 +6,17 @@ import (
 	"github.com/zh-five/daemon"
 	"log"
 	"os"
+	"time"
 )
 
 func main() {
-	logFile := "/tmp/daemon.log"
+	logFile := "daemon.log"
 
 	//启动一个子进程后主程序退出
 	daemon.Background(logFile, true)
 
 	//以下代码只有子程序会执行
-	log.Println(os.Getpid(), ":", "执行正式代码:")
+	log.Println(os.Getpid(), "start...")
+	time.Sleep(time.Second * 10)
+	log.Println(os.Getpid(), "end")
 }

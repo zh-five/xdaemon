@@ -10,6 +10,7 @@ import (
 	"time"
 )
 
+//@link
 func main() {
 	d := flag.Bool("d", false, "是否后台守护进程方式运行")
 	flag.Parse()
@@ -17,13 +18,12 @@ func main() {
 	//启动守护进程
 	if *d {
 		//创建一个Daemon对象
-		logFile := "/tmp/daemon.log"
+		logFile := "daemon.log"
 		d := daemon.NewDaemon(logFile)
-
 		//调整一些运行参数(可选)
 		//d.MaxCount = 2000
 
-		//执行
+		//执行守护进程模式
 		d.Run()
 	}
 
